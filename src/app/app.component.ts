@@ -47,11 +47,11 @@ export class AppComponent implements OnInit, OnDestroy {
         // 3. Add debounce to prevent API calls until user stop typing.
 
         this.charactersResults$ = this.searchTermByCharacters.pipe(
-            filter((input) => input.length >= 3),
-            debounceTime(300),
             switchMap((searchTerm) =>
                 this.mockDataService.getCharacters(searchTerm)
-            )
+            ),
+            filter((input) => input.length >= 3),
+            debounceTime(300),
         );
     }
 
