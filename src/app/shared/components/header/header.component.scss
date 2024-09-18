@@ -1,18 +1,18 @@
-@import 'src/app/shared/styles/variables/colors';
+@import "src/app/shared/styles/variables/colors";
 
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-    padding: 0 30px;
-    background-color: $color-white;
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  padding: 0 30px;
+  background-color: $color-white;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .logout-button {
-    background-color: #007298;
-    color: #fff;
-    padding: 0.5rem;
-    border-radius: 0.2rem;
+  background-color: #007298;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
 }
