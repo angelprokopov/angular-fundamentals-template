@@ -1,46 +1,70 @@
 @import 'src/app/shared/styles/styles';
 
 .course {
-    min-width: 60vw;
+ min-width: 60vw;
 
-    &__flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 
-        & input {
-            flex: 1;
-        }
-
-        & app-button {
-            margin-left: 16px;
-        }
-
-        & .course__duration {
-            margin-left: 16px;
-        }
+    & input {
+      flex: 1;
     }
 
-    &__authors {
-        margin-top: 8px;
-        // display: flex;
-
-        &-item {
-            margin-right: 10px;
-        }
+    & app-button {
+      margin-left: 16px;
     }
 
-    &__authors ul li {
-        display: flex;
-        gap: 0.5rem;
+    & .course__duration {
+      margin-left: 16px;
     }
+  }
 
-    &__icon {
-        margin-left: 4px;
-        cursor: pointer;
+  &__authors {
+    margin-top: 8px;
+    display: flex;
+
+    &-item {
+      margin-right: 10px;
     }
+  }
+
+  &__icon {
+    margin-left: 4px;
+    cursor: pointer;
+  }
+
+  button {
+    display: none;
+  }
+
+  .form__action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+  }
 }
 
-.button {
-    cursor: pointer;
+li {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+form.ng-submitted input.ng-invalid,
+input.ng-touched.ng-invalid,
+form.ng-submitted textarea.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border: 2px solid $color-red;
+}
+
+input.ng-untouched,
+input.ng-pristine,
+textarea.ng-untouched,
+textarea.ng-pristine {
+  border: 1px solid $color-gray;
 }

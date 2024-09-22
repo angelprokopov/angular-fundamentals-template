@@ -1,46 +1,64 @@
-<app-header>
-    <div class="user-info">
-        <p class="username" *ngIf="isLoggedIn">Harry Potter</p>
-        <app-button
-            (click)="onLoginToggleHandler()"
-            *ngIf="isLoggedIn"
-            buttonText="logout"
-        ></app-button>
-    </div>
-    <app-button
-        (click)="onLoginToggleHandler()"
-        *ngIf="!isLoggedIn"
-        buttonText="login"
-    ></app-button>
+<app-header></app-header>
+<!-- Header component -->
+<!-- <app-header>
+  <span>Harry Potter</span>
+  <app-button buttonText="LOGOUT"></app-button>
 </app-header>
+<app-header>
+  <app-button buttonText="LOGIN"></app-button>
+</app-header> -->
+
 <div class="app-root">
-    <!-- Search component -->
-    <app-search
-        placeholder="Search..."
-        (search)="onCourseSearch($event)"
-    ></app-search>
+  <!--
+  <app-button buttonText="SHOW COURSE"></app-button>
+  <app-button iconName="trash-can"></app-button>
+  <app-button iconName="pen"></app-button> -->
 
-    <!-- Info component -->
-    <app-info
-        title="Your List Is Empty"
-        text="Please use 'Add New Course' button to add your first course"
-    >
-        <app-button buttonText="add new course"></app-button>
-    </app-info>
+  <!-- Search component -->
+  <!--<app-search></app-search>-->
 
-    <!-- Course Card component -->
-    <!-- <app-course-card></app-course-card> -->
+  <!-- Info component -->
+  <!-- <app-info title="Your List Is Empty" text="Please use 'Add New Course' button to add your first course">
+    <app-button buttonText="ADD NEW COURSE"></app-button>
+  </app-info> -->
 
-    <app-courses></app-courses>
-    <!-- Login Form component -->
-    <!-- <app-login-form></app-login-form> -->
+  <!-- Course Card component -->
+  <!-- <app-course-card 
+  [title]="'Angular'" 
+  [description]="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'" 
+  [authors]="['Dave Haisenberg', 'Tony Ja']"
+  [duration]="120"
+  [creationDate]="creationDate"
+  [editable]="true">
+  </app-course-card> -->
 
-    <!-- Login Form component -->
-    <app-registration-form></app-registration-form>
+  <!-- Course-Info component -->
+  <!-- <app-course-info
+  [title]="'Angular'" 
+  [description]="'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'" 
+  [id]="'65xz74sxt634hfdhg3sT764'"
+  [authors]="['Dave Haisenberg', 'Tony Ja']"
+  [duration]="120"
+  [creationDate]="creationDate"
+  [editable]="true"></app-course-info> -->
 
-    <!-- Login Form component -->
-    <app-course-form></app-course-form>
+  <!-- Course List component -->
+  <!-- <app-courses-list
+  [courses]=mockedCoursesList
+  [editable]="true"></app-courses-list>
+  <app-courses-list
+  [courses]=mockedCoursesList
+  ></app-courses-list> -->
 
-    <!-- Modal component -->
-    <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
+  <!-- Login Form component -->
+  <!--<app-login-form></app-login-form>-->
+
+  <!-- Login Form component -->
+  <!--<app-registration-form></app-registration-form>-->
+
+  <!-- Login Form component -->
+  <!--<app-course-form></app-course-form>-->
+
+  <!-- Modal component -->
+  <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>

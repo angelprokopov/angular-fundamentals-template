@@ -1,33 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { faIcons } from '@app/shared/common/fa-icons';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-registration-form',
-    templateUrl: './registration-form.component.html',
-    styleUrls: ['./registration-form.component.scss'],
+  selector: 'app-registration-form',
+  templateUrl: './registration-form.component.html',
+  styleUrls: ['./registration-form.component.scss'],
 })
-export class RegistrationFormComponent implements OnInit {
-    registrationForm!: FormGroup;
-    isFormSubmmited!: boolean;
-    isValid!: boolean;
+export class RegistrationFormComponent {
+  registrationForm!: FormGroup;
 
-    eyeIcon = faIcons.eye;
-    eyeSlashIcon = faIcons.eyeSlash;
+  constructor(private router: Router) {
+    this.buildForm();
+  }
 
-    ngOnInit(): void {
-        this.registrationForm = new FormGroup({
-            name: new FormControl(null, [
-                Validators.required,
-                Validators.minLength(6),
-            ]),
-            email: new FormControl(null, [Validators.required]),
-            password: new FormControl(null, [Validators.required]),
-        });
+  buildForm(): void{
+    this.registrationForm = new FormGroup({
+      name: new FormControl('',[Validators.required,Validators.minLength(6)]),
+      email: new FormControl('',[Validators.required]),
+      password: new FormControl('',[Validators.required,Validators.minLength(6)]),
+    });
+  }
+
+  onSubmit(): void {
+    console.log(this.registrationForm.valid);
+    if (this.registrationForm.valid) {
+      console.log(this.registrationForm.value);
+      //Database operation here
+    } else {
+      this.registrationForm.markAllAsTouched();
     }
+  }
 
-    onRegister(): void {
-        this.isFormSubmmited = true;
-        console.log(this.registrationForm);
+  triggerSubmit() {
+    const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+    if (submitButton) {
+      submitButton.click();
     }
+  }
+
+  navigateToLogin(): void {
+    this.router.navigate(['/login']);
+  }
 }

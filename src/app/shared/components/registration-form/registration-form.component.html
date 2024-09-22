@@ -1,88 +1,42 @@
 <h2 class="text-align-center">Registration</h2>
 <div class="app-plate">
-    <div class="registration-form" [formGroup]="registrationForm">
+  <div class="registration-form">
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div>
-            <div class="form__control">
-                <label for="name">Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Input text"
-                    formControlName="name"
-                />
-                <span
-                    id="nameErrorMessage"
-                    class="text-danger"
-                    *ngIf="
-                        (!registrationForm.get('name')?.valid &&
-                            registrationForm.get('name')?.touched) ||
-                        (!registrationForm.get('name')?.valid &&
-                            isFormSubmmited)
-                    "
-                    >Name is required.</span
-                >
+          <div class="form__control">
+            <label for="name">Name</label>
+            <!--Use the name `name` for the form control.-->
+            <input type="text" id="name" placeholder="Input text" formControlName="name"/>
+            <div *ngIf="registrationForm.get('name')?.touched">
+              <span id="nameErrorMessage" class="text-danger" *ngIf="registrationForm.get('name')?.errors?.['required']">Name is required.</span>
             </div>
-            <div class="form__control">
-                <label for="email">Email</label>
-                <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    placeholder="Input text"
-                    formControlName="email"
-                    emailValidator
-                />
-                <span
-                    id="emailErrorMessage"
-                    class="text-danger"
-                    *ngIf="
-                        (!registrationForm.get('email')?.valid &&
-                            registrationForm.get('email')?.touched) ||
-                        (!registrationForm.get('email')?.valid &&
-                            isFormSubmmited)
-                    "
-                    >Email is required.</span
-                >
+          </div>
+          <div class="form__control">
+            <!--Use the name `email` for the form control.-->
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Input text" formControlName="email" emailValidator/>
+            <div *ngIf="registrationForm.get('email')?.touched">
+              <span id="emailErrorMessage" class="text-danger" *ngIf="registrationForm.get('email')?.errors?.['required']">Email is required.</span>
+              <span id="emailErrorMessage" class="text-danger" *ngIf="registrationForm.get('email')?.errors?.['invalidEmail']">Email is not valid.</span>
             </div>
-            <div class="form__control">
-                <label for="password">Password</label>
-                <div class="password-input-wrapper">
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Input text"
-                        formControlName="password"
-                    />
-                    <p
-                        class="toggle-password"
-                        appTogglePassword
-                        #toggle="togglePassword"
-                    >
-                        <fa-icon
-                            [icon]="toggle.isVisible() ? eyeIcon : eyeSlashIcon"
-                        ></fa-icon>
-                    </p>
-                </div>
-                <span
-                    id="passwordErrorMessage"
-                    class="text-danger"
-                    *ngIf="
-                        (!registrationForm.get('password')?.valid &&
-                            registrationForm.get('password')?.touched) ||
-                        (!registrationForm.get('password')?.valid &&
-                            isFormSubmmited)
-                    "
-                    >Password is required.</span
-                >
+          </div>
+          <div class="form__control">
+            <!--Use the name `password` for the form control.-->
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Input text" formControlName="password"/>
+            <div *ngIf="registrationForm.get('password')?.touched">
+              <span id="passwordErrorMessage" class="text-danger" *ngIf="registrationForm.get('password')?.errors?.['required']">Password is required.</span>
+              <span id="passwordErrorMessageLength" class="text-danger" *ngIf="registrationForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters length.</span>
             </div>
+          </div>
         </div>
         <div class="form__action">
-            <app-button
-                buttonText="Register"
-                (click)="onRegister()"
-            ></app-button>
+          <app-button buttonText="LOGIN" (buttonClick)="triggerSubmit()"></app-button>
+          <button type="submit"></button>
         </div>
-    </div>
+        <div class="form__text">
+          Already have an account? <a (click)="navigateToLogin()">Login here</a>.
+        </div>
+    </form>
+  </div>
 </div>
