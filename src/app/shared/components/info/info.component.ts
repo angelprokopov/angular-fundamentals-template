@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./info.component.scss']
 })
 export class InfoComponent {
-  @Input() title!: string; // Required input for title
-  @Input() text?: string | undefined;  // Optional input for text
-}
+@Input() title: string = '';  
+@Input() text?: string;   
 // Use the names `title` and `text`.
+}

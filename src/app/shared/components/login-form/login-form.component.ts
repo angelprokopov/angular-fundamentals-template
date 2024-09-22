@@ -1,36 +1,28 @@
-import { Component, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
-    selector: "app-login-form",
-    templateUrl: "./login-form.component.html",
-    styleUrls: ["./login-form.component.scss"],
+  selector: 'app-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-    @ViewChild("loginForm") public loginForm!: NgForm;
-    public isSubmitted: boolean = false;
+  @ViewChild("loginForm") public loginForm!: NgForm;
 
-    /**
-     * Handles the form submission.
-     * Checks if the form is valid and performs login logic.
-     */
-    onSubmit(): void {
-        this.isSubmitted = true;
 
-        if (this.loginForm.valid) {
-            const email = this.loginForm.value.email;
-            const password = this.loginForm.value.password;
+  public email: string = '';
+  public password: string = '';
 
-            // TODO: Implement actual login logic here (e.g., call an authentication service)
-            console.log("Login successful!");
-            console.log("Email:", email);
-            console.log("Password:", password);
 
-            // Optionally, reset the form after successful submission
-            this.loginForm.resetForm();
-            this.isSubmitted = false;
-        } else {
-            console.log("Form is invalid");
-        }
+  onSubmit() {
+    if (this.loginForm.valid) {
+      console.log("Form Submitted", {
+        email: this.email,
+        password: this.password
+      });
+
+    } else {
+      console.log("Form is invalid");
     }
+  }
 }
