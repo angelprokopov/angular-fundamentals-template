@@ -1,43 +1,39 @@
 <app-header>
-    <div class="user-info">
-        <p class="username" *ngIf="isLoggedIn">Harry Potter</p>
-        <app-button
-            (click)="onLoginToggleHandler()"
-            *ngIf="isLoggedIn"
-            buttonText="logout"
-        ></app-button>
-    </div>
-    <app-button
-        (click)="onLoginToggleHandler()"
-        *ngIf="!isLoggedIn"
-        buttonText="login"
-    ></app-button>
+  <span class="username" *ngIf="isLoggedIn" (click)="toggleLogin()">Harry Potter</span>
+
+  <div class="auth-buttons">
+
+    <app-button text="LOGOUT" *ngIf="isLoggedIn" (click)="toggleLogin()"></app-button>
+    <app-button text="LOGIN" *ngIf="!isLoggedIn" (click)="toggleLogin()"></app-button>
+
+  </div>
 </app-header>
 <div class="app-root">
-    <!-- Search component -->
-    <!--<app-search></app-search>-->
+  <!-- Search component -->
+  <!--<app-search></app-search>-->
 
-    <!-- Info component -->
-    <app-info
-        title="Your List Is Empty"
-        text="Please use 'Add New Course' button to add your first course"
-    >
-        <app-button buttonText="add new course"></app-button>
-    </app-info>
+  <!-- Info component -->
+  <app-info [title]="infoHeader" [text]="infoText">
+    <!-- <app-button buttonText="ADD NEW COURSE"></app-button> -->
+    <app-button text="ADD NEW COURSE"></app-button>
+  </app-info>
 
-    <!-- Course Card component -->
-    <!-- <app-course-card></app-course-card> -->
+  <!-- Course Card component -->
+  <app-course-card>
+    <app-button ></app-button>
+  
+  </app-course-card>
+  <!-- <app-courses></app-courses> -->
 
-    <app-courses></app-courses>
-    <!-- Login Form component -->
-    <!--<app-login-form></app-login-form>-->
+  <!-- Login Form component -->
+  <!--<app-login-form></app-login-form>-->
 
-    <!-- Login Form component -->
-    <!--<app-registration-form></app-registration-form>-->
+  <!-- Login Form component -->
+  <!--<app-registration-form></app-registration-form>-->
 
-    <!-- Login Form component -->
-    <!--<app-course-form></app-course-form>-->
+  <!-- Login Form component -->
+  <!--<app-course-form></app-course-form>-->
 
-    <!-- Modal component -->
-    <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
+  <!-- Modal component -->
+  <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>

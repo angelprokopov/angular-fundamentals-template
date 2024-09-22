@@ -1,10 +1,4 @@
-<div class="app-button">
-  <!-- Replace the text below with your code -->
-  <div class="app-button">
-    <button class="btn" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.hovered]="isHovered">
-      <fa-icon *ngIf="iconName" [icon]="iconName"></fa-icon>
-      {{ buttonText }}
-    </button>
-  </div>
-  
-</div>
+<button class="app-button">
+  <fa-icon *ngIf="iconName" [icon]="iconName"></fa-icon>
+  <span *ngIf="text">{{ text }}</span>
+</button>

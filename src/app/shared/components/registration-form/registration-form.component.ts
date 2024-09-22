@@ -1,35 +1,56 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 
 @Component({
-  selector: 'app-registration-form',
-  templateUrl: './registration-form.component.html',
-  styleUrls: ['./registration-form.component.scss'],
+    selector: "app-registration-form",
+    templateUrl: "./registration-form.component.html",
+    styleUrls: ["./registration-form.component.scss"],
 })
-export class RegistrationFormComponent {
-  registrationForm!: FormGroup;
-  ngOnInit(): void {
-    this.registrationForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(6)]), // Name should be at least 6 characters
-      email: new FormControl('', [Validators.required, this.emailValidator]), // Custom email validator
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]) // Password should be at least 6 characters
-    });
-  }
+export class RegistrationFormComponent implements OnInit {
+    registrationForm!: FormGroup;
+    isSubmitted = false;
 
-  emailValidator(control: FormControl): { [key: string]: boolean } | null {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailRegex.test(control.value)) {
-      return { emailInvalid: true };
+    constructor(private fb: FormBuilder) {}
+
+    ngOnInit(): void {
+        this.initializeForm();
     }
-    return null;
-  }
 
-
-  onSubmit() {
-    if (this.registrationForm.valid) {
-      console.log('Form Submitted', this.registrationForm.value);
-    } else {
-      console.log('Form is invalid');
+    /**
+     * Initializes the registration form with form controls and validators.
+     */
+    private initializeForm(): void {
+        this.registrationForm = this.fb.group({
+            name: ["", [Validators.required, Validators.minLength(6)]],
+            email: ["", [Validators.required]], 
+            password: ["", [Validators.required, Validators.minLength(6)]],
+        });
     }
-  }
+
+    /**
+     * Getter for easy access to form controls in the template.
+     */
+    get formControls() {
+        return this.registrationForm.controls;
+    }
+
+    /**
+     * Handles form submission.
+     */
+    onSubmit(): void {
+        this.isSubmitted = true;
+
+        if (this.registrationForm.valid) {
+            console.log("Form Submitted!", this.registrationForm.value);
+            // Handle form submission logic here (e.g., send data to backend)
+            // Optionally, reset the form after successful submission
+            this.registrationForm.reset();
+            this.isSubmitted = false;
+        } else {
+            console.log("Form is invalid");
+            // Optionally, mark all controls as touched to trigger validation messages
+            this.registrationForm.markAllAsTouched();
+        }
+    }
 }
