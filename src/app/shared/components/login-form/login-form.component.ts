@@ -1,38 +1,20 @@
-// src/app/auth/login-form/login-form.component.ts
-
-import { Component, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { faIcons } from '@app/shared/common/fa-icons';
 
 @Component({
-    selector: "app-login-form",
-    templateUrl: "./login-form.component.html",
-    styleUrls: ["./login-form.component.scss"],
+    selector: 'app-login-form',
+    templateUrl: './login-form.component.html',
+    styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-    @ViewChild("loginForm") public loginForm!: NgForm;
-    public isSubmitted: boolean = false;
+    @ViewChild('loginForm') public loginForm!: NgForm;
+    isFormSubmmited!: boolean;
 
-    /**
-     * Handles the form submission.
-     * Checks if the form is valid and performs login logic.
-     */
+    eyeIcon = faIcons.eye;
+    eyeSlashIcon = faIcons.eyeSlash;
+
     onSubmit(): void {
-        this.isSubmitted = true;
-
-        if (this.loginForm.valid) {
-            const email = this.loginForm.value.email;
-            const password = this.loginForm.value.password;
-
-            // TODO: Implement actual login logic here (e.g., call an authentication service)
-            console.log("Login successful!");
-            console.log("Email:", email);
-            console.log("Password:", password);
-
-            // Optionally, reset the form after successful submission
-            this.loginForm.resetForm();
-            this.isSubmitted = false;
-        } else {
-            console.log("Form is invalid");
-        }
+        this.isFormSubmmited = true;
     }
 }

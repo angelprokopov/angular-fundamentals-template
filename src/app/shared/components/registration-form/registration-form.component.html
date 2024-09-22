@@ -1,61 +1,88 @@
-<!-- src/app/auth/registration-form.component.html -->
-
 <h2 class="text-align-center">Registration</h2>
 <div class="app-plate">
-  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
-    <div class="registration-form">
-      <div>
-        <!-- Name Field -->
-        <div class="form__control">
-          <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Enter your name" formControlName="name"
-            [class.invalid]="(isSubmitted || formControls['name'].touched) && formControls['name'].invalid" />
-          <!-- Name Error Messages -->
-          <span id="nameErrorMessage" class="text-danger"
-            *ngIf="(isSubmitted || formControls['name'].touched) && formControls['name'].errors">
-            <span *ngIf="formControls['name'].errors['required']">Name is required.</span>
-            <span *ngIf="formControls['name'].errors['minlength']">Name must be at least 6 characters long.</span>
-          </span>
+    <div class="registration-form" [formGroup]="registrationForm">
+        <div>
+            <div class="form__control">
+                <label for="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Input text"
+                    formControlName="name"
+                />
+                <span
+                    id="nameErrorMessage"
+                    class="text-danger"
+                    *ngIf="
+                        (!registrationForm.get('name')?.valid &&
+                            registrationForm.get('name')?.touched) ||
+                        (!registrationForm.get('name')?.valid &&
+                            isFormSubmmited)
+                    "
+                    >Name is required.</span
+                >
+            </div>
+            <div class="form__control">
+                <label for="email">Email</label>
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Input text"
+                    formControlName="email"
+                    emailValidator
+                />
+                <span
+                    id="emailErrorMessage"
+                    class="text-danger"
+                    *ngIf="
+                        (!registrationForm.get('email')?.valid &&
+                            registrationForm.get('email')?.touched) ||
+                        (!registrationForm.get('email')?.valid &&
+                            isFormSubmmited)
+                    "
+                    >Email is required.</span
+                >
+            </div>
+            <div class="form__control">
+                <label for="password">Password</label>
+                <div class="password-input-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Input text"
+                        formControlName="password"
+                    />
+                    <p
+                        class="toggle-password"
+                        appTogglePassword
+                        #toggle="togglePassword"
+                    >
+                        <fa-icon
+                            [icon]="toggle.isVisible() ? eyeIcon : eyeSlashIcon"
+                        ></fa-icon>
+                    </p>
+                </div>
+                <span
+                    id="passwordErrorMessage"
+                    class="text-danger"
+                    *ngIf="
+                        (!registrationForm.get('password')?.valid &&
+                            registrationForm.get('password')?.touched) ||
+                        (!registrationForm.get('password')?.valid &&
+                            isFormSubmmited)
+                    "
+                    >Password is required.</span
+                >
+            </div>
         </div>
-
-        <!-- Email Field -->
-        <div class="form__control">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email" formControlName="email" emailValidator
-            [class.invalid]="(isSubmitted || formControls['email'].touched) && formControls['email'].invalid" />
-          <!-- Email Error Messages -->
-          <span id="emailErrorMessage" class="text-danger"
-            *ngIf="(isSubmitted || formControls['email'].touched) && formControls['email'].errors">
-            <span *ngIf="formControls['email'].errors['required']">Email is required.</span>
-            <span *ngIf="formControls['email'].errors['invalidEmail']">Please enter a valid email address.</span>
-          </span>
+        <div class="form__action">
+            <app-button
+                buttonText="Register"
+                (click)="onRegister()"
+            ></app-button>
         </div>
-
-        <!-- Password Field -->
-        <div class="form__control">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" formControlName="password"
-            [class.invalid]="(isSubmitted || formControls['password'].touched) && formControls['password'].invalid" />
-          <!-- Password Error Messages -->
-          <span id="passwordErrorMessage" class="text-danger"
-            *ngIf="(isSubmitted || formControls['password'].touched) && formControls['password'].errors">
-            <span *ngIf="formControls['password'].errors['required']">Password is required.</span>
-            <span *ngIf="formControls['password'].errors['minlength']">Password must be at least 6 characters
-              long.</span>
-          </span>
-        </div>
-      </div>
-
-      <div class="form__action">
-        <!-- Submit Button -->
-        <button type="submit" [disabled]="registrationForm.invalid" class="btn btn-primary">
-          Register
-        </button>
-      </div>
-
-      <div class="form__text">
-        Already have an account? <a routerLink="/login"><strong>Login</strong></a>
-      </div>
     </div>
-  </form>
 </div>

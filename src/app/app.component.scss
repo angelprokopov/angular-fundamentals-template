@@ -7,7 +7,13 @@
     padding: 24px;
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 .username {
-    margin-right: 26px;
-    height: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
