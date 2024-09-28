@@ -1,26 +1,24 @@
 <div class="course-card">
     <div class="course-card__description">
-      <!-- Replace ::text:: with your code -->
-      <div class="course-card__description-title">{{ title }}</div>
-      <div class="course-card__description-text">{{ description }}</div>
+        <div class="course-card__description-title">{{ title }}</div>
+        <div class="course-card__description-text">{{ description }}</div>
     </div>
+
     <div class="course-card__info">
         <div class="course-card__info-text">
-            <div>
-              <b>Authors: </b>
-              {{ authors }}
-            </div>
-            <div><b>Duration: </b><span class="course-card__duration">{{ duration | duration }} hours</span></div>
-            <div><b>Created: </b><span class="course-card__date">{{ creationDate | date }}</span></div>
+            <div><b>Authors: </b>{{ authors.join(', ') }}</div>
+            <div><b>Duration: </b><span class="course-card__duration">{{ duration }} minutes</span></div>
+            <div><b>Created: </b><span class="course-card__date">{{ creationDate | date: 'mediumDate' }}</span></div>
         </div>
+
         <div class="course-card__info-actions">
-            <app-button buttonText="SHOW COURSE" (click)="onShowCourse()"></app-button>
+            <!-- Show Course Button (Always visible) -->
+            <app-button text="SHOW COURSE"></app-button>
+
+            <!-- Conditional Edit and Remove buttons, shown only if 'editable' is true -->
             <div class="course-card__buttons" *ngIf="editable">
-                <!--Enter your code here-->
-                <app-button iconName="trash-can"></app-button>
-                <app-button iconName="pen"></app-button>
+                <ng-content text="SHOW COURSE"></ng-content>
             </div>
-            <ng-content></ng-content>
         </div>
     </div>
 </div>

@@ -1,15 +1,17 @@
-<div class="title">{{ title }}</div>
+<!-- Replace ::text:: with your code -->
+<div class="title">{{ course?.title }}</div>
 <div class="course-info">
   <div class="course-info__description">
-    {{ description }}
+    {{ course?.description }}
   </div>
   <div class="course-info__info">
-    <div><b>ID: </b><span class="course-info__info-id">{{ id }}</span></div>
-    <div><b>Duration: </b><span class="course-info__info-duration">{{ getFormattedDuration(duration)}} hours</span></div>
-    <div><b>Created: </b><span class="course-info__info-date">{{ getFormattedDate(creationDate)}}</span></div>
-    <div><b>Authors: </b><span class="course-info__info-authors">{{ authors }}</span></div>
+    <div><b>ID: </b><span class="course-info__info-id">{{ course?.id }}</span></div>
+    <div><b>Duration: </b><span class="course-info__info-duration">{{ course?.duration }} minutes</span></div>
+    <div><b>Created: </b><span class="course-info__info-date">{{ course?.creationDate | date:'shortDate' }}</span></div>
+    <div><b>Authors: </b><span class="course-info__info-authors">{{ course?.authors?.join(', ') }}</span></div>
   </div>
 </div>
 <div class="navigation-block">
-  <app-button buttonText="BACK"></app-button>
+  <button *ngIf="isAdmin" (click)="editCourse()">Edit Course</button>
+  <button (click)="navigateToCourses()">Back to Courses</button>
 </div>

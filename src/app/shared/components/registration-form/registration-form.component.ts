@@ -1,56 +1,56 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 
 @Component({
-  selector: 'app-registration-form',
-  templateUrl: './registration-form.component.html',
-  styleUrls: ['./registration-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-registration-form",
+    templateUrl: "./registration-form.component.html",
+    styleUrls: ["./registration-form.component.scss"],
 })
-export class RegistrationFormComponent {
-  registrationForm!: FormGroup;
-  formFields= {
-    name: 'name',
-    email: 'email',
-    password: 'password'
-  }
+export class RegistrationFormComponent implements OnInit {
+    registrationForm!: FormGroup;
+    isSubmitted = false;
 
-  constructor(private router: Router) {
-    this.buildForm();
-  }
+    constructor(private fb: FormBuilder) {}
 
-  buildForm(): void{
-    this.registrationForm = new FormGroup({
-      [this.formFields.name]: new FormControl('',[Validators.required,Validators.minLength(6)]),
-      [this.formFields.email]: new FormControl('',[Validators.required]),
-      [this.formFields.password]: new FormControl('',[Validators.required,Validators.minLength(6)]),
-    });
-  }
-
-  get nameControl(): FormControl {
-    return this.registrationForm.get(this.formFields.name)! as FormControl;
-  }
-
-  get emailControl(): FormControl {
-    return this.registrationForm.get(this.formFields.email)! as FormControl;
-  }
-
-  get passwordControl(): FormControl {
-    return this.registrationForm.get(this.formFields.password)! as FormControl;
-  }
-
-  onSubmit(): void {
-    console.log(this.registrationForm.valid);
-    if (this.registrationForm.valid) {
-      console.log(this.registrationForm.value);
-      // Handle form submission logic
-    } else {
-      this.registrationForm.markAllAsTouched();
+    ngOnInit(): void {
+        this.initializeForm();
     }
-  }
 
-  navigateToLogin(): void {
-    this.router.navigate(['/login']);
-  }
+    /**
+     * Initializes the registration form with form controls and validators.
+     */
+    private initializeForm(): void {
+        this.registrationForm = this.fb.group({
+            name: ["", [Validators.required, Validators.minLength(6)]],
+            email: ["", [Validators.required]], 
+            password: ["", [Validators.required, Validators.minLength(6)]],
+        });
+    }
+
+    /**
+     * Getter for easy access to form controls in the template.
+     */
+    get formControls() {
+        return this.registrationForm.controls;
+    }
+
+    /**
+     * Handles form submission.
+     */
+    onSubmit(): void {
+        this.isSubmitted = true;
+
+        if (this.registrationForm.valid) {
+            console.log("Form Submitted!", this.registrationForm.value);
+            // Handle form submission logic here (e.g., send data to backend)
+            // Optionally, reset the form after successful submission
+            this.registrationForm.reset();
+            this.isSubmitted = false;
+        } else {
+            console.log("Form is invalid");
+            // Optionally, mark all controls as touched to trigger validation messages
+            this.registrationForm.markAllAsTouched();
+        }
+    }
 }

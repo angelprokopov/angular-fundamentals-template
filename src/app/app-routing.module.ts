@@ -1,37 +1,73 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { AdminGuard } from "./user/guards/admin.guard";
+import { AuthorizedGuard } from "./auth/guards/authorized.guard";
+import { NotAuthorizedGuard } from "./auth/guards/not-authorized.guard";
 
-export const routes: Routes = [
+const routes: Routes = [
     {
-      path: 'login',
-      loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule)
+        path: "login",
+        loadComponent: () =>
+            import("./shared/components/login-form/login-form.component").then(
+                (m) => m.LoginFormComponent
+            ),
+        canActivate: [NotAuthorizedGuard],
     },
     {
-      path: 'registration',
-      loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule)
+        path: "registration",
+        loadComponent: () =>
+            import(
+                "./shared/components/registration-form/registration-form.component"
+            ).then((m) => m.RegistrationFormComponent),
+        canActivate: [NotAuthorizedGuard],
     },
     {
-        path: 'courses',
-        loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule),
-        children: [
-          { path: 'add', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule) },
-          { path: ':id', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule) },
-          { path: 'edit/:id', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule) }
-        ]
-      },
-    {
-      path: '',
-      redirectTo: '/courses',
-      pathMatch: 'full'
+        path: "courses",
+        loadComponent: () =>
+            import("./features/courses/course-list/course-list.component").then(
+                (m) => m.CourseListComponent
+            ),
+        canLoad: [AuthorizedGuard],
     },
     {
-      path: '**',
-      redirectTo: '/courses'
-    }
-  ];
+        path: "courses/add",
+        loadComponent: () =>
+            import(
+                "./shared/components/course-form/course-form.component"
+            ).then((m) => m.CourseFormComponent),
+        canLoad: [AuthorizedGuard],
+        canActivate: [AdminGuard],
+    },
+    {
+        path: "courses/:id",
+        loadComponent: () =>
+            import(
+                "./shared/components/course-card/course-card.component"
+            ).then((m) => m.CourseCardComponent),
+        canLoad: [AuthorizedGuard],
+    },
+    {
+        path: "courses/edit/:id",
+        loadComponent: () =>
+            import(
+                "./shared/components/course-form/course-form.component"
+            ).then((m) => m.CourseFormComponent),
+        canLoad: [AuthorizedGuard],
+        canActivate: [AdminGuard],
+    },
+    {
+        path: "",
+        redirectTo: "/courses",
+        pathMatch: "full",
+    },
+    {
+        path: "**",
+        redirectTo: "/courses",
+    },
+];
 
-  @NgModule({
+@NgModule({
     imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
-  })
-  export class AppRoutingModule {}
+    exports: [RouterModule],
+})
+export class AppRoutingModule {}
