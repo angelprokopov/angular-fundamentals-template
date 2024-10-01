@@ -1,38 +1,54 @@
-// src/app/auth/login-form/login-form.component.ts
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth.service';
 
-import { Component, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
 
 @Component({
-    selector: "app-login-form",
-    templateUrl: "./login-form.component.html",
-    styleUrls: ["./login-form.component.scss"],
+  selector: 'app-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-    @ViewChild("loginForm") public loginForm!: NgForm;
-    public isSubmitted: boolean = false;
 
-    /**
-     * Handles the form submission.
-     * Checks if the form is valid and performs login logic.
-     */
-    onSubmit(): void {
-        this.isSubmitted = true;
+  constructor(private authService:AuthService, private router:Router) {
 
-        if (this.loginForm.valid) {
-            const email = this.loginForm.value.email;
-            const password = this.loginForm.value.password;
+  }
 
-            // TODO: Implement actual login logic here (e.g., call an authentication service)
-            console.log("Login successful!");
-            console.log("Email:", email);
-            console.log("Password:", password);
+  @ViewChild("loginForm") public loginForm!: NgForm;
+  //Use the names `email` and `password` for form controls.
+  loginButtonText:string = "login";
+  loginEmail:string="";
+  loginPassword:string="";
+  serverError:string='';
+  
+  formSubmitted:boolean=false;
+  
 
-            // Optionally, reset the form after successful submission
-            this.loginForm.resetForm();
-            this.isSubmitted = false;
-        } else {
-            console.log("Form is invalid");
-        }
+  submitLoginHandler(loginForm:NgForm) {
+    this.formSubmitted =  true;
+    console.log(loginForm);
+
+    if (!loginForm.valid) {
+      return;
     }
+
+    console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value).subscribe(
+      (responseData) => {
+        console.log(responseData);
+        this.router.navigate([''])
+
+      },
+      (errorMessage) => {
+        this.serverError= errorMessage;
+        console.log(this.serverError);
+        // console.log(error.error.errors); //if we handle the error in the component, 
+        
+      }
+    );
+  }
+    
+ 
 }
+

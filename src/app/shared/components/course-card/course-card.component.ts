@@ -1,26 +1,43 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output } from "@angular/core";
+
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  creationDate: string;
+  duration: number;
+  authors: string[];
+}
+
+interface Author { 
+  id: string;
+   name: string; 
+  }
 
 @Component({
-    selector: "app-course-card",
-    templateUrl: "./course-card.component.html",
-    styleUrls: ["./course-card.component.scss"],
+  selector: "app-course-card",
+  templateUrl: "./course-card.component.html",
+  styleUrls: ["./course-card.component.scss"],
 })
 export class CourseCardComponent {
-    // Input properties for course data
-    @Input() title!: string;
-    @Input() description!: string;
-    @Input() creationDate!: Date;
-    @Input() duration!: number;
-    @Input() authors!: string[];
+  
+  @Input() course!: Course;
+  @Input() authorsList!:Author[];
+  @Input() isEditable: boolean = true;
+  @Output () clickOnShow = () => {
+    console.log('Show course button clicked');
+  };
 
-    // Input to determine if the course is editable
-    @Input() editable: boolean = true;
+  showCourseBtnText:string = "Show course";
+  
+  // courseAuthorsIds:string[] = this.course.authors;
 
-    // Output event for show course action
-    @Output() clickOnShow = new EventEmitter<void>();
-
-    // Function to emit 'show course' event
-    onShowCourse() {
-        this.clickOnShow.emit();
-    }
+  
+     getAuthorNamesByIds(courseAuthorsIds: string[]): string {
+    return this.authorsList
+      .filter(author => courseAuthorsIds.includes(author.id))
+      .map(author => author.name)
+      .join(', ');
+  }
 }
