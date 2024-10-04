@@ -10,24 +10,31 @@
     color: #fff;
     text-transform: uppercase;
     cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-
+  
     &:hover {
         background: #016486;
     }
-
     &:focus {
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        background: #a8e2f5;
+       
     }
-
     &:active {
-        background: #005a6b;
+        background: #013344;
     }
 
     &__single-icon {
         padding: 13px;
-        gap: 0; // No gap when only the icon is present
     }
+
+    &__single-icon {
+        padding: 13px;
+        // background: #007298;
+        border-radius: 4px;
+        color: #007298;
+        cursor: pointer;
+    }
+
+    
+
 }
+
