@@ -1,24 +1,16 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CoursesListComponent } from "./courses-list/courses-list.component";
 import { CoursesComponent } from "./courses.component";
+import { CourseListComponent } from "./course-list/course-list.component";
 import { SharedModule } from "@app/shared/shared.module";
-import { RouterModule, Routes } from "@angular/router";
-import { CourseFormComponent } from "@app/shared/components";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
-
-
-
-const routes: Routes = [
-  { path: '', component: CoursesListComponent },
-  { path: 'add', component: CourseFormComponent },
-  { path: 'edit/:id', component: CourseFormComponent },
-];
-
+const components = [CourseListComponent];
 
 @NgModule({
-  declarations: [CoursesListComponent, CoursesComponent],
-  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
-  exports: [CoursesListComponent, CoursesComponent, RouterModule],
+    declarations: [CoursesComponent, components, CoursesComponent],
+    imports: [CommonModule, SharedModule, FontAwesomeModule],
+    exports: [components],
 })
 export class CoursesModule {}
+

@@ -1,79 +1,56 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { User } from "@app/user.model";
-import { catchError, tap } from "rxjs/operators";
-import { BehaviorSubject, throwError, Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { SessionStorageService } from "./session-storage.service";
 
-interface AuthResponse {
-  successful: boolean;
-  result?: string;
-  errors?: string[];
-  user?: {};
-}
-
 @Injectable({
-  providedIn: "root",
+    providedIn: "root",
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:4000';
-  private isAuthorized$$ = new BehaviorSubject<boolean>(false);
-  public isAuthorized$ = this.isAuthorized$$.asObservable();
+    private isAuthorized$$ = new BehaviorSubject<boolean>(false); // Private BehaviorSubject to track authorization state
+    public isAuthorized$ = this.isAuthorized$$.asObservable(); // Public Observable to expose authorization state
 
-  constructor(private http: HttpClient, private sessionStorage: SessionStorageService) {}
+    private apiUrl = "http://localhost:4000/api"; // Base API URL, adjust based on your environment
 
-  login(user: User): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, user).pipe(
-      tap(response => {
-        if (response.successful) {
+    constructor(
+        private http: HttpClient,
+        private sessionStorage: SessionStorageService
+    ) {
+        // Initialize authorization state based on session storage
+        this.isAuthorized$$.next(!!this.sessionStorage.getToken());
+    }
 
-          if(response.result) {
+    login(user: { email: string; password: string }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/login`, user).pipe(
+            map((response: any) => {
+                if (response.token) {
+                    this.sessionStorage.setToken(response.token);
+                    this.isAuthorized$$.next(true); // Update authorization state
+                }
+                return response;
+            })
+        );
+    }
 
-            this.sessionStorage.setToken(response.result);
-          }
-          
-          this.isAuthorized$$.next(true);
-        }
-      }),
-      catchError(error => {
-        this.isAuthorized$$.next(false);
-        return throwError(error);
-      })
-    );
-  }
+    logout(): void {
+        this.sessionStorage.deleteToken();
+        this.isAuthorized$$.next(false); // Update authorization state
+    }
 
-  logout(): void {
-    this.sessionStorage.deleteToken();
-    this.isAuthorized$$.next(false);
-  }
+    register(user: { email: string; password: string }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/register`, user);
+    }
 
-  register(user: User): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/registration`, user).pipe(
-      tap(response => {
-        if (response.successful) {
-          if(response.result) {
+    get isAuthorised(): boolean {
+        return this.isAuthorized$$.value;
+    }
 
-            this.sessionStorage.setToken(response.result);
-          }
-          this.isAuthorized$$.next(true);
-        }
-      }),
-      catchError(error => {
-        this.isAuthorized$$.next(false);
-        return throwError(error);
-      })
-    );
-  }
+    set isAuthorised(value: boolean) {
+        this.isAuthorized$$.next(value);
+    }
 
-
-  get isAuthorised(): boolean {
-    return this.isAuthorized$$.value;
-}
-
-set isAuthorised(value: boolean) {
-    this.isAuthorized$$.next(value);
-}
-  getLoginUrl(): string {
-    return `${this.baseUrl}/login`;
-  }
+    getLoginUrl(): string {
+        return `${this.apiUrl}/login`;
+    }
 }

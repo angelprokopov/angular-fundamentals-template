@@ -1,21 +1,22 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-    name: 'duration'
+    name: "duration",
 })
-// export class DurationPipe {
-//     // Add your code here
-// }
-
-
-
 export class DurationPipe implements PipeTransform {
     transform(value: number): string {
-        let hours = Math.floor(value / 60); 
-        let minutes = Math.floor(value % 60);
-        let hrs = hours>0?'hrs':'hr'
+        if (value == null || value < 0) {
+            return "Invalid duration";
+        }
 
-        let result = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')} ${hrs}`;
-        return result;
+        const hours = Math.floor(value / 60);
+        const minutes = value % 60;
+        const formattedHours = hours.toString().padStart(2, "0");
+        const formattedMinutes = minutes.toString().padStart(2, "0");
+
+        // Singular or plural hour based on the hours value
+        const hourLabel = hours === 1 ? "hour" : "hours";
+
+        return `${formattedHours}:${formattedMinutes} ${hourLabel}`;
     }
-  }
+}
