@@ -1,39 +1,39 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthorizedGuard } from './auth/guards/authorized.guard';
-import { CoursesComponent } from './features/courses/courses.component';
-import { NotAuthorizedGuard } from './auth/guards/not-authorized.guard';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { LoginFormComponent } from "./shared/components/login-form/login-form.component";
+import { RegistrationFormComponent } from "./shared/components/registration-form/registration-form.component";
+import { NotAuthorizedGuard } from "./auth/guards/not-authorized.guard";
+import { AuthorizedGuard } from "./auth/guards/authorized.guard";
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
+const routes: Routes = [
+  {
+    path: "login",
+    component: LoginFormComponent,
+    canActivate: [NotAuthorizedGuard],
+  },
+  {
+    path: "registration",
+    component: RegistrationFormComponent,
+    canActivate: [NotAuthorizedGuard],
+  },
 
-export const  routes: Routes = [
-    
-    { path: '', redirectTo: '/courses',pathMatch: 'full' },
+  {
+    path: "courses",
+    loadChildren: () =>
+      import("./courses/courses.module").then((m) => m.CoursesModule),
+    canLoad: [AuthorizedGuard],
+    canActivate: [AuthorizedGuard],
+  },
 
-    { path:
-         'courses/:id', 
-         loadChildren: () => import('./features/course-info/course-info.module').then(m => m.CourseInfoModule),canLoad : [AuthorizedGuard]  },
+  { path: "", redirectTo: "courses", pathMatch: "full" },
 
+  { path: "**", redirectTo: "courses" },
+];
 
-    { path: 
-        '', 
-        loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule), 
-        canActivate : [NotAuthorizedGuard]  },
-        
-    { path: 
-        'courses', 
-        loadChildren: () => import('./features/courses/courses.module').then(m => m.CoursesModule),canLoad : [AuthorizedGuard] },
-
-    { path: '**', redirectTo: '/courses'},
-   ];
- 
-
-@NgModule({  
-    imports: [RouterModule.forRoot(routes)], 
-    exports: [RouterModule]
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
-
-
-export class AppRoutingModule { }
-
-
-
+export class AppRoutingModule {}

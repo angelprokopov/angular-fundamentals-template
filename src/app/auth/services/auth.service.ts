@@ -1,79 +1,86 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { User } from "@app/user.model";
-import { catchError, tap } from "rxjs/operators";
-import { BehaviorSubject, throwError, Observable } from "rxjs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import { SessionStorageService } from "./session-storage.service";
-
-interface AuthResponse {
-  successful: boolean;
-  result?: string;
-  errors?: string[];
-  user?: {};
-}
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:4000';
-  private isAuthorized$$ = new BehaviorSubject<boolean>(false);
-  public isAuthorized$ = this.isAuthorized$$.asObservable();
+  private isAuthorized$$: BehaviorSubject<boolean>;
+  public isAuthorized$: Observable<boolean>;
 
-  constructor(private http: HttpClient, private sessionStorage: SessionStorageService) {}
+  private apiUrl = "http://localhost:4000";
+  authToken: any;
+  router: any;
 
-  login(user: User): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, user).pipe(
-      tap(response => {
-        if (response.successful) {
+  constructor(
+    private http: HttpClient,
+    private sessionStorage: SessionStorageService
+  ) {
+    const token = this.sessionStorage.getToken();
+    this.isAuthorized$$ = new BehaviorSubject<boolean>(!!token);
+    this.isAuthorized$ = this.isAuthorized$$.asObservable();
+  }
 
-          if(response.result) {
-
-            this.sessionStorage.setToken(response.result);
-          }
-          
-          this.isAuthorized$$.next(true);
+  login(user: { email: string; password: string }) {
+    // replace 'any' with the required interface
+    // Add your code here
+    return this.http.post<any>(`${this.apiUrl}/login`, user).pipe(
+      tap((response) => {
+        if (response && response.result) {
+          const token = response.result.replace("Bearer ", "");
+          this.sessionStorage.setToken(token);
+          this.isAuthorised = true;
         }
-      }),
-      catchError(error => {
-        this.isAuthorized$$.next(false);
-        return throwError(error);
       })
     );
   }
 
   logout(): void {
-    this.sessionStorage.deleteToken();
-    this.isAuthorized$$.next(false);
+    localStorage.removeItem("authToken");
+    this.authToken = null;
+    this.router.navigate(["/login"]);
   }
 
-  register(user: User): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/registration`, user).pipe(
-      tap(response => {
-        if (response.successful) {
-          if(response.result) {
-
-            this.sessionStorage.setToken(response.result);
-          }
-          this.isAuthorized$$.next(true);
+  register(user: {
+    name: string;
+    email: string;
+    password: string;
+  }): Observable<any> {
+    // replace 'any' with the required interface
+    // Add your code here
+    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+      tap((response) => {
+        if (response && response.result) {
+          const token = response.result.replace("Bearer ", "");
+          this.sessionStorage.setToken(token);
+          this.isAuthorised = true;
         }
-      }),
-      catchError(error => {
-        this.isAuthorized$$.next(false);
-        return throwError(error);
       })
     );
   }
 
+  getToken(): string | null {
+    if (!this.authToken) {
+      this.authToken = this.sessionStorage.getToken();
+    }
+    return this.authToken;
+  }
 
   get isAuthorised(): boolean {
-    return this.isAuthorized$$.value;
-}
+    // Add your code here. Get isAuthorized$$ value
+    return this.isAuthorized$$.getValue();
+  }
 
-set isAuthorised(value: boolean) {
+  set isAuthorised(value: boolean) {
+    // Add your code here. Change isAuthorized$$ value
     this.isAuthorized$$.next(value);
-}
+  }
+
   getLoginUrl(): string {
-    return `${this.baseUrl}/login`;
+    // Add your code here
+    return "/login";
   }
 }

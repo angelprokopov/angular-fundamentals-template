@@ -1,61 +1,45 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { AuthService } from "@app/auth/services/auth.service";
-import { EmailValidatorDirective } from "@app/shared/directives/email.directive";
+import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { UserService } from "@app/user/services/user.service";
 
 @Component({
   selector: "app-registration-form",
   templateUrl: "./registration-form.component.html",
   styleUrls: ["./registration-form.component.scss"],
 })
-
-
 export class RegistrationFormComponent implements OnInit {
-
-  constructor(private authService: AuthService, private router:Router) {}
-
   registrationForm!: FormGroup;
-  // Use the names `name`, `email`, `password` for the form controls.
+  submitted = false;
 
-  formSubmitted: boolean = false;
-
-  registrationBtnText: string = "login";
-
-  serverError:string='';
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.registrationForm = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
-      email: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [
-        Validators.required,
-        // Validators.minLength(6),
-      ]),
+      name: new FormControl("", [Validators.required, Validators.minLength(6)]),
+      email: new FormControl("", [Validators.required, Validators.email]),
+      password: new FormControl("", [Validators.required]),
     });
   }
 
-  submitRegistrationHandler(registrationForm: FormGroup) {
-    this.formSubmitted = true;
-    if (!registrationForm.valid) {
-      return;
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.registrationForm.valid) {
+      const registrationData = this.registrationForm.value;
+      this.userService.register(registrationData).subscribe((res) => {
+        if (res.successful) {
+          console.log("Registration was successful", res.result);
+        } else if (!res.successful) {
+          console.log("Registration failed: ", res.errors);
+        }
+        (error: string) => console.log(error);
+      });
+    } else {
+      console.log("Form is invalid");
+      this.registrationForm.markAllAsTouched();
     }
+  }
 
-    console.log(this.registrationForm.value);
-    this.authService.register(this.registrationForm.value).subscribe(
-      (responseData) => {
-        console.log(responseData);
-        this.router.navigate([''])
-      },
-      (errorMessage) => {
-        this.serverError= errorMessage;
-        console.log(this.serverError);
-        // console.log(error.error.errors); //if we handle the error in the component, 
-        
-      }
-    );
+  get f() {
+    return this.registrationForm.controls;
   }
 }

@@ -1,4 +1,8 @@
 <div class="app-search">
-  <input #search type="text" placeholder="Enter your search query">
-  <app-button buttonText="Search" (click) ="searchQuery(search.value)" ></app-button>
+  <input
+    type="text"
+    placeholder="{{ placeholder }}"
+    [(ngModel)]="searchValue"
+  />
+  <button class="app-button" (click)="click()">Search</button>
 </div>

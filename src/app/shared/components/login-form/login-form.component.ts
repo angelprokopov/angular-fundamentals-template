@@ -1,54 +1,51 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '@app/auth/services/auth.service';
+import { Component, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
+import { UserService } from "@app/user/services/user.service";
 
-
+interface User {
+  name?: string;
+  email: string;
+  password: string;
+}
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss'],
+  selector: "app-login-form",
+  templateUrl: "./login-form.component.html",
+  styleUrls: ["./login-form.component.scss"],
 })
 export class LoginFormComponent {
-
-  constructor(private authService:AuthService, private router:Router) {
-
-  }
-
   @ViewChild("loginForm") public loginForm!: NgForm;
-  //Use the names `email` and `password` for form controls.
-  loginButtonText:string = "login";
-  loginEmail:string="";
-  loginPassword:string="";
-  serverError:string='';
-  
-  formSubmitted:boolean=false;
-  
 
-  submitLoginHandler(loginForm:NgForm) {
-    this.formSubmitted =  true;
-    console.log(loginForm);
+  constructor(private userService: UserService, private router: Router) {}
 
-    if (!loginForm.valid) {
-      return;
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const loginData: User = this.loginForm.value;
+      this.userService
+        .login({
+          email: loginData.email,
+          password: loginData.password,
+        })
+        .subscribe(
+          (res) => {
+            if (res.successful && res.user) {
+              console.log("Login successful");
+              if (res.user.email === "admin@email.com") {
+                this.router.navigate([""]);
+              } else {
+                this.router.navigate([""]);
+              }
+            } else {
+              console.log("Login failed", res.errors);
+            }
+          },
+          (error) => {
+            console.log("Login failed: ", error);
+          }
+        );
+    } else {
+      console.log("Form is invalid");
     }
-
-    console.log(this.loginForm.value);
-    this.authService.login(this.loginForm.value).subscribe(
-      (responseData) => {
-        console.log(responseData);
-        this.router.navigate([''])
-
-      },
-      (errorMessage) => {
-        this.serverError= errorMessage;
-        console.log(this.serverError);
-        // console.log(error.error.errors); //if we handle the error in the component, 
-        
-      }
-    );
   }
-    
- 
+  //Use the names `email` and `password` for form controls.
 }
-

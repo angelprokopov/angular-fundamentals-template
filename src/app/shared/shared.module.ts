@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from "@angular/router";
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ModalComponent } from './components/modal/modal.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ModalComponent } from "./components/modal/modal.component";
 import {
   HeaderComponent,
   ButtonComponent,
@@ -11,13 +10,12 @@ import {
   CourseCardComponent,
   LoginFormComponent,
   RegistrationFormComponent,
-  CourseFormComponent
+  CourseFormComponent,
 } from "./components";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { DurationPipe } from './pipes/duration.pipe';
-import { CustomDatePipe } from './pipes/custom-date.pipe';
-import { EmailValidatorDirective } from '@shared/directives/email.directive';
-import { NotAuthorizedGuard } from '@app/auth/guards/not-authorized.guard';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DurationPipe } from "./pipes/duration.pipe";
+import { CustomDatePipe } from "./pipes/custom-date.pipe";
+import { EmailValidatorDirective } from "@shared/directives/email.directive";
 
 const components = [
   HeaderComponent,
@@ -29,27 +27,20 @@ const components = [
   LoginFormComponent,
   RegistrationFormComponent,
   CourseFormComponent,
-  DurationPipe,
-  CustomDatePipe,
-  EmailValidatorDirective
+  EmailValidatorDirective,
 ];
 
-
-const routes: Routes = [
-  { path: 'login', component: LoginFormComponent },
-  { path: 'registration', component: RegistrationFormComponent },
-
-];
+const pipes = [DurationPipe, CustomDatePipe];
 
 @NgModule({
-  declarations: [components, EmailValidatorDirective],
+  declarations: [...components, DurationPipe, EmailValidatorDirective],
   imports: [
     CommonModule,
+    CustomDatePipe,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
   ],
-  exports: [components, RouterModule]
+  exports: [...components, ...pipes],
 })
-export class SharedModule { }
+export class SharedModule {}

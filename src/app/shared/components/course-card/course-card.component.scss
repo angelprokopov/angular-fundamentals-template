@@ -14,7 +14,7 @@
 
   &__description {
     flex: 2;
-   
+
     &-title {
       font-weight: bold;
     }
@@ -29,19 +29,20 @@
 
     &-text {
       margin-top: 16px;
-    }    
+    }
   }
 
-  &__info-actions{
+  &__info-actions {
     display: flex;
-    gap: 1em;
+    flex-direction: row;
   }
 
-  &__buttons{
-    color: #000;
+  &__buttons {
     display: flex;
-    // gap: 0.5em;
+    flex-direction: row;
+
+    ::ng-deep [action-button] {
+      margin-left: 15px;
+    }
   }
-
-
 }

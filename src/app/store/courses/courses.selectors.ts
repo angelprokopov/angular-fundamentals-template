@@ -1,22 +1,45 @@
-// Add your code here
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { CoursesState, coursesFeatureKey } from "./courses.reducer";
 
+export const selectCoursesState =
+  createFeatureSelector<CoursesState>(coursesFeatureKey);
 
-const getCoursesFeatureSelector = createFeatureSelector<CoursesState>(coursesFeatureKey);
+export const selectIsAllCoursesLoading = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.isAllCoursesLoading
+);
 
-// isAllCoursesLoadingSelector
-export const isAllCoursesLoadingSelector = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.isAllCoursesLoading);
+export const selectIsSearchingState = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.isSearchState
+);
 
-// isSearchingStateSelector
-export const isSearchingStateSelector = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.isSearchState);
-// isSingleCourseLoadingSelector
-export const isSingleCourseLoadingSelector = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.isSingleCourseLoading);
-// getCourses
-export const getCourses = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.allCourses);
-// getAllCourses
-export const getAllCourses = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.allCourses);
-// getCourse
-export const getCourse = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.course);
-// getErrorMessage
-export const getErrorMessage = createSelector(getCoursesFeatureSelector, (state:CoursesState)=>state.errorMessage);
+export const selectIsSingleCourseLoading = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.isSingleCourseLoading
+);
+
+export const getCourses = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.allCourses
+);
+
+export const getAllCourses = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.allCourses
+);
+
+export const getCourse = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => {
+    const selectedCourseId = state.selectedCourseId;
+    return state.allCourses
+      ? state.allCourses.find((course) => course.id === selectedCourseId)
+      : null;
+  }
+);
+
+export const getErrorMessage = createSelector(
+  selectCoursesState,
+  (state: CoursesState) => state.errorMessage
+);

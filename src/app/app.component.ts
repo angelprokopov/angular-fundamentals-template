@@ -1,65 +1,33 @@
-import { Component, OnInit } from "@angular/core";
-import { CommonModule, NgFor } from '@angular/common';
-import { faTrashCan,faPencil  } from "@fortawesome/free-solid-svg-icons";
-import { mockedCoursesList, mockedAuthorsList } from "./shared/mock"; 
-import { CoursesService } from "./services/courses.service"; 
-import { Course } from "./courses.model";
-import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators";
+import { Component } from "@angular/core";
+import { mockedCoursesList } from "./shared/mocks/mock";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
+  course = mockedCoursesList[0];
+  title: string = "courses-app";
+  isLoggedIn: boolean = false;
+  loginButtonText: string = this.getLoginButtonText();
 
-
-  constructor  (private courseServices:CoursesService,
-    private http:HttpClient){}
-  
-  title = "courses-app";
-  courses = mockedCoursesList;
-  authors = mockedAuthorsList;
-
-  //header props
-  isLogged: boolean = true;
-  logged: string = "logout";
-  notLogged: string = "login";
-
-  //info props
-  infoTitle = "Your List Is Empty";
-  infoText = "Please use ’Add New Course’ button to add your first course";
-  addNewCourseBtnText = "Add new course";
-
-  //course-card
-  deleteIcon = faTrashCan;
-  editIcon  = faPencil;
-
-
-  
-   getCourses() {
-    this.http.get('http://localhost:4000/courses/all')
-      // .pipe(
-      //   map(responseData => {
-      //     const postsArray = [];
-      //     for (const key in responseData) {
-      //       if (responseData.hasOwnProperty(key)) {
-      //         postsArray.push({ ...responseData[key], id: key });
-      //       }
-      //     }
-      //     return postsArray;
-      //   })
-      // )
-      .subscribe(posts => {
-        // ...
-        console.log(posts);
-      });
+  handleLogin(): void {
+    this.isLoggedIn = !this.isLoggedIn;
+    this.loginButtonText = this.getLoginButtonText();
   }
-  ngOnInit(){
-    console.log('asdas');
+  getLoginButtonText(): string {
+    return this.isLoggedIn ? "Logout" : "Login";
+  }
 
-    this.courseServices.getAll(); 
-    
+  isEditable: boolean = true;
+
+  handleShowCourse(): void {}
+
+  searchValue: string = "";
+
+  onSearch(searchQuery: string): void {
+    console.log("Search query:", searchQuery);
+    // Add logic to handle the search input
   }
 }
