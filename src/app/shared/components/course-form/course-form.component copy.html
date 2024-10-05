@@ -11,7 +11,7 @@
         <label for="title">Title</label>
         <!--Use the name `title` for the form control.-->
         <input formControlName="title" type="text" id="title" placeholder="Input text" />
-        <span *ngIf="(!courseForm.get('title')?.valid&&courseForm.get('title')?.touched) ||(!courseForm.get('title')?.valid&&formSubmitted)" id="titleErrorMessage" class="text-danger">Title is required.</span>
+        <span *ngIf="!courseForm.get('title')?.valid&&courseForm.get('title')?.touched" id="titleErrorMessage" class="text-danger">Title is required.</span>
       </div>
 
 
@@ -20,7 +20,7 @@
         <!--Use the name `description` for the form control.-->
         <textarea formControlName="description" id="description" name="description" placeholder="Input text" rows="4"
           cols="5"></textarea>
-        <span *ngIf="(!courseForm.get('description')?.valid&&courseForm.get('description')?.touched)||(!courseForm.get('description')?.valid&&formSubmitted)" id="descriptionErrorMessage" class="text-danger">Description is required.</span>
+        <span *ngIf="!courseForm.get('description')?.valid&&courseForm.get('description')?.touched" id="descriptionErrorMessage" class="text-danger">Description is required.</span>
       </div>
       <div class="separator"></div>
 
@@ -31,12 +31,10 @@
           <!--Use the name `duration` for the form array.-->
           <input formControlName="duration" type="number" id="duration" placeholder="Input duration" />
           <div class="course__duration">
-
-            {{courseForm.value.duration|duration}}
-            <!-- ::Duration:: -->
+            ::Duration::
           </div>
         </div>
-        <span *ngIf="(!courseForm.get('duration')?.valid&&courseForm.get('duration')?.touched)||(!courseForm.get('duration')?.valid&&formSubmitted)" id="durationErrorMessage" class="text-danger">Duration is required.</span>
+        <span *ngIf="!courseForm.get('duration')?.valid&&courseForm.get('duration')?.touched" id="durationErrorMessage" class="text-danger">Duration is required.</span>
       </div>
 
 
@@ -49,7 +47,7 @@
          
           <!--Use the name `author` for the form control.-->
           <input formControlName="author" type="text" id="author" placeholder="Input Author Name" />
-          <app-button id="createAuthor" buttonText="create author" (click)="addAuthorsHandler(courseForm.get('author')?.value)"></app-button>
+          <app-button id="createAuthor" buttonText="create author" (click)="addAuthorsHandler()"></app-button>
         </div>
         <span id="authorErrorMessage">New author should contain only latin letters and numbers.</span>
         <div class="course__authors"  formArrayName="authors" >
@@ -57,7 +55,7 @@
           <!--Use the name `authors` for the form array.-->
           {{courseForm.value.authors}}
           
-          <!-- ::Authors:: -->
+          ::Authors::
         </div>
       </div>
 
